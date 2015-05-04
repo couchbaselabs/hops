@@ -12,6 +12,10 @@
 		275D39931AF80D750013B9A9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 275D39921AF80D750013B9A9 /* Images.xcassets */; };
 		275D39961AF80D750013B9A9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275D39941AF80D750013B9A9 /* MainMenu.xib */; };
 		275D39A21AF80D750013B9A9 /* HopsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39A11AF80D750013B9A9 /* HopsTests.m */; };
+		275D39AE1AF80DCE0013B9A9 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */; };
+		275D39B21AF80F0A0013B9A9 /* QueryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B11AF80F0A0013B9A9 /* QueryController.m */; };
+		275D39B41AF8155E0013B9A9 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		275D39B71AF81B9A0013B9A9 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B61AF81B9A0013B9A9 /* Beer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +28,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		275D39B31AF815510013B9A9 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				275D39B41AF8155E0013B9A9 /* CouchbaseLite.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		275D39881AF80D750013B9A9 /* Hops.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hops.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		275D398C1AF80D750013B9A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -35,6 +53,11 @@
 		275D399B1AF80D750013B9A9 /* HopsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HopsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		275D39A01AF80D750013B9A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		275D39A11AF80D750013B9A9 /* HopsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HopsTests.m; sourceTree = "<group>"; };
+		275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLite.framework; sourceTree = "<group>"; };
+		275D39B01AF80F0A0013B9A9 /* QueryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryController.h; sourceTree = "<group>"; };
+		275D39B11AF80F0A0013B9A9 /* QueryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryController.m; sourceTree = "<group>"; };
+		275D39B51AF81B9A0013B9A9 /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
+		275D39B61AF81B9A0013B9A9 /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				275D39AE1AF80DCE0013B9A9 /* CouchbaseLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +84,7 @@
 			children = (
 				275D398A1AF80D750013B9A9 /* Hops */,
 				275D399E1AF80D750013B9A9 /* HopsTests */,
+				275D39AB1AF80DCE0013B9A9 /* Frameworks */,
 				275D39891AF80D750013B9A9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,6 +103,10 @@
 			children = (
 				275D398D1AF80D750013B9A9 /* AppDelegate.h */,
 				275D398E1AF80D750013B9A9 /* AppDelegate.m */,
+				275D39B01AF80F0A0013B9A9 /* QueryController.h */,
+				275D39B11AF80F0A0013B9A9 /* QueryController.m */,
+				275D39B51AF81B9A0013B9A9 /* Beer.h */,
+				275D39B61AF81B9A0013B9A9 /* Beer.m */,
 				275D39921AF80D750013B9A9 /* Images.xcassets */,
 				275D39941AF80D750013B9A9 /* MainMenu.xib */,
 				275D398B1AF80D750013B9A9 /* Supporting Files */,
@@ -111,6 +140,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		275D39AB1AF80DCE0013B9A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -121,6 +158,7 @@
 				275D39841AF80D750013B9A9 /* Sources */,
 				275D39851AF80D750013B9A9 /* Frameworks */,
 				275D39861AF80D750013B9A9 /* Resources */,
+				275D39B31AF815510013B9A9 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -211,7 +249,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				275D39911AF80D750013B9A9 /* main.m in Sources */,
+				275D39B21AF80F0A0013B9A9 /* QueryController.m in Sources */,
 				275D398F1AF80D750013B9A9 /* AppDelegate.m in Sources */,
+				275D39B71AF81B9A0013B9A9 /* Beer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +369,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = Hops/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -340,6 +384,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = Hops/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

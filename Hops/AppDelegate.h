@@ -7,9 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class CBLDatabase, QueryController;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+@property (readonly) CBLDatabase* db;
+
+@property (readonly) QueryController* beerListController;
 
 @end
 
