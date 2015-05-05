@@ -10,8 +10,10 @@
 
 @interface Beer : CBLModel
 
-@property NSString *name, *brewery, *category, *description, *style;
+@property NSString *name, *brewery, *category, *style;
 @property NSDate* updated;
 @property float abv;
+
+@property NSString* blurb;
 
 @end

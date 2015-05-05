@@ -16,6 +16,10 @@
 		275D39B21AF80F0A0013B9A9 /* QueryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B11AF80F0A0013B9A9 /* QueryController.m */; };
 		275D39B41AF8155E0013B9A9 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		275D39B71AF81B9A0013B9A9 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B61AF81B9A0013B9A9 /* Beer.m */; };
+		275D39BB1AF83AB50013B9A9 /* DocViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B91AF83AB50013B9A9 /* DocViewer.m */; };
+		275D39BC1AF83AB50013B9A9 /* DocViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275D39BA1AF83AB50013B9A9 /* DocViewer.xib */; };
+		275D39BF1AF83B530013B9A9 /* RevTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39BE1AF83B530013B9A9 /* RevTreeView.m */; };
+		275D39C21AF83CA40013B9A9 /* DocHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39C11AF83CA40013B9A9 /* DocHistory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +62,13 @@
 		275D39B11AF80F0A0013B9A9 /* QueryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryController.m; sourceTree = "<group>"; };
 		275D39B51AF81B9A0013B9A9 /* Beer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beer.h; sourceTree = "<group>"; };
 		275D39B61AF81B9A0013B9A9 /* Beer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beer.m; sourceTree = "<group>"; };
+		275D39B81AF83AB50013B9A9 /* DocViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocViewer.h; sourceTree = "<group>"; };
+		275D39B91AF83AB50013B9A9 /* DocViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocViewer.m; sourceTree = "<group>"; };
+		275D39BA1AF83AB50013B9A9 /* DocViewer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocViewer.xib; sourceTree = "<group>"; };
+		275D39BD1AF83B530013B9A9 /* RevTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevTreeView.h; sourceTree = "<group>"; };
+		275D39BE1AF83B530013B9A9 /* RevTreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevTreeView.m; sourceTree = "<group>"; };
+		275D39C01AF83CA40013B9A9 /* DocHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocHistory.h; sourceTree = "<group>"; };
+		275D39C11AF83CA40013B9A9 /* DocHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocHistory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +118,13 @@
 				275D39B11AF80F0A0013B9A9 /* QueryController.m */,
 				275D39B51AF81B9A0013B9A9 /* Beer.h */,
 				275D39B61AF81B9A0013B9A9 /* Beer.m */,
+				275D39B81AF83AB50013B9A9 /* DocViewer.h */,
+				275D39B91AF83AB50013B9A9 /* DocViewer.m */,
+				275D39BA1AF83AB50013B9A9 /* DocViewer.xib */,
+				275D39BD1AF83B530013B9A9 /* RevTreeView.h */,
+				275D39BE1AF83B530013B9A9 /* RevTreeView.m */,
+				275D39C01AF83CA40013B9A9 /* DocHistory.h */,
+				275D39C11AF83CA40013B9A9 /* DocHistory.m */,
 				275D39921AF80D750013B9A9 /* Images.xcassets */,
 				275D39941AF80D750013B9A9 /* MainMenu.xib */,
 				275D398B1AF80D750013B9A9 /* Supporting Files */,
@@ -230,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				275D39931AF80D750013B9A9 /* Images.xcassets in Resources */,
+				275D39BC1AF83AB50013B9A9 /* DocViewer.xib in Resources */,
 				275D39961AF80D750013B9A9 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,9 +267,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				275D39C21AF83CA40013B9A9 /* DocHistory.m in Sources */,
 				275D39911AF80D750013B9A9 /* main.m in Sources */,
 				275D39B21AF80F0A0013B9A9 /* QueryController.m in Sources */,
 				275D398F1AF80D750013B9A9 /* AppDelegate.m in Sources */,
+				275D39BB1AF83AB50013B9A9 /* DocViewer.m in Sources */,
+				275D39BF1AF83B530013B9A9 /* RevTreeView.m in Sources */,
 				275D39B71AF81B9A0013B9A9 /* Beer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
