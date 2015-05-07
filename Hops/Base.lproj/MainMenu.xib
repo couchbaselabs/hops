@@ -460,7 +460,10 @@
                                         </connections>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EM8-Is-g0i">
-                                        <rect key="frame" x="133" y="340" width="133" height="23"/>
+                                        <rect key="frame" x="48" y="340" width="304" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="bhH-Un-FbG"/>
+                                        </constraints>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="Name of Brewery" id="qTh-VA-LwE">
                                             <font key="font" size="17" name="Covington"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -468,25 +471,6 @@
                                         </textFieldCell>
                                         <connections>
                                             <binding destination="PzJ-Aj-ROL" name="value" keyPath="selection.brewery" id="JeN-zN-glN">
-                                                <dictionary key="options">
-                                                    <bool key="NSConditionallySetsEditable" value="YES"/>
-                                                </dictionary>
-                                            </binding>
-                                        </connections>
-                                    </textField>
-                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HFt-Gw-a2N">
-                                        <rect key="frame" x="18" y="77" width="363" height="237"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="237" id="V4M-qt-Lgx"/>
-                                        </constraints>
-                                        <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" id="PoY-pB-QyL">
-                                            <font key="font" size="14" name="Alegreya-Italic"/>
-                                            <string key="title">The Triple is a strong, full-bodied Belgian abbey-style ale. The authentic Belgian yeast strain used in fermentation contributes to a rich array of spicy, phenolic, and fruit-like flavors and noticeable alcoholic warmth. This unfiltered ale has an irresistible pale orange-colored hazy glow.</string>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <binding destination="PzJ-Aj-ROL" name="value" keyPath="selection.blurb" id="FgF-b0-NoP">
                                                 <dictionary key="options">
                                                     <bool key="NSConditionallySetsEditable" value="YES"/>
                                                 </dictionary>
@@ -513,39 +497,32 @@
                                             </binding>
                                         </connections>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEN-SV-mTu">
-                                        <rect key="frame" x="18" y="44" width="37" height="16"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" title="Label" id="x9s-ij-XdF">
-                                            <font key="font" size="13" name="HelveticaNeue"/>
-                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HFt-Gw-a2N">
+                                        <rect key="frame" x="19" y="79" width="363" height="237"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="237" id="V4M-qt-Lgx"/>
+                                        </constraints>
+                                        <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" id="PoY-pB-QyL">
+                                            <font key="font" size="14" name="Alegreya-Italic"/>
+                                            <string key="title">The Triple is a strong, full-bodied Belgian abbey-style ale. The authentic Belgian yeast strain used in fermentation contributes to a rich array of spicy, phenolic, and fruit-like flavors and noticeable alcoholic warmth. This unfiltered ale has an irresistible pale orange-colored hazy glow.</string>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <connections>
-                                            <binding destination="PzJ-Aj-ROL" name="value" keyPath="selection.category" id="iMS-L3-IrN"/>
-                                        </connections>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r2e-Yx-QUj">
-                                        <rect key="frame" x="343" y="42" width="38" height="17"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="right" title="Label" id="EPu-BR-1I1">
-                                            <font key="font" size="13" name="HelveticaNeue"/>
-                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <binding destination="PzJ-Aj-ROL" name="value" keyPath="selection.style" id="nbX-Q9-WU4"/>
+                                            <binding destination="PzJ-Aj-ROL" name="value" keyPath="selection.blurb" id="FgF-b0-NoP">
+                                                <dictionary key="options">
+                                                    <bool key="NSConditionallySetsEditable" value="YES"/>
+                                                </dictionary>
+                                            </binding>
                                         </connections>
                                     </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="HFt-Gw-a2N" firstAttribute="leading" secondItem="JEN-SV-mTu" secondAttribute="leading" id="1Mv-7M-9QJ"/>
-                                    <constraint firstItem="sfk-m5-GoA" firstAttribute="top" secondItem="r2e-Yx-QUj" secondAttribute="bottom" constant="8" id="3v4-im-YnL"/>
                                     <constraint firstItem="HFt-Gw-a2N" firstAttribute="leading" secondItem="NH8-ib-2Nj" secondAttribute="leading" constant="20" id="5hl-Za-Pa1"/>
                                     <constraint firstItem="EM8-Is-g0i" firstAttribute="top" secondItem="akS-Bb-qPJ" secondAttribute="bottom" constant="8" id="F4t-de-iqm"/>
                                     <constraint firstItem="HFt-Gw-a2N" firstAttribute="top" secondItem="EM8-Is-g0i" secondAttribute="bottom" constant="26" id="F96-Fs-ziA"/>
-                                    <constraint firstItem="r2e-Yx-QUj" firstAttribute="trailing" secondItem="sfk-m5-GoA" secondAttribute="trailing" id="SaW-3x-S5Z"/>
                                     <constraint firstAttribute="centerX" secondItem="akS-Bb-qPJ" secondAttribute="centerX" id="WfW-e8-4CG"/>
                                     <constraint firstAttribute="centerX" secondItem="EM8-Is-g0i" secondAttribute="centerX" id="clV-Av-MO5"/>
-                                    <constraint firstItem="r2e-Yx-QUj" firstAttribute="baseline" secondItem="JEN-SV-mTu" secondAttribute="baseline" constant="2" id="hb1-71-SWR"/>
                                     <constraint firstAttribute="bottom" secondItem="sfk-m5-GoA" secondAttribute="bottom" constant="15" id="iow-F8-GbU"/>
                                     <constraint firstItem="akS-Bb-qPJ" firstAttribute="top" secondItem="NH8-ib-2Nj" secondAttribute="top" constant="20" id="jpf-v3-lfP"/>
                                     <constraint firstAttribute="trailing" secondItem="HFt-Gw-a2N" secondAttribute="trailing" constant="20" id="osy-2f-QKz"/>

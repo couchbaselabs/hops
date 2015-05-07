@@ -7,11 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class CBLDocument;
+@class CBLDocument, RevTreeView;
 
 
 @interface DocViewer : NSWindowController
 
 @property CBLDocument* cblDocument;
+
+@property RevTreeView* revTreeView;
 
 @end

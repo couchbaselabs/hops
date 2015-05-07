@@ -7,12 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class CBLDocument;
+@class CBLDocument, CBLRevision;
 
 
 NSTreeNode* GetDocRevisionTree(CBLDocument* doc);
 
 NSSet* GetLeafNodes(NSTreeNode* tree);
+
+NSTreeNode* GetNodeForRevision(NSTreeNode* tree, CBLRevision* rev);
 
 NSTreeNode* CopyTree(NSTreeNode* root);
 

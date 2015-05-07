@@ -7,11 +7,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class CBLDocument;
+@class CBLDocument, CBLRevision, CBLUnsavedRevision;
 
 
 @interface RevTreeView : NSView
 
 @property CBLDocument* cblDocument;
+
+@property CBLRevision* selectedRev;
+
+- (CBLUnsavedRevision*) createDraftRevision;
+- (void) removeDraftRevision;
 
 @end

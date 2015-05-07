@@ -42,6 +42,8 @@
 //    _push = [_db createPushReplication: url];
 //    [_push start];
 
+    //[self fixDocs: self];
+
     CBLView* nameView = [_db viewNamed: @"byName"];
     [nameView setMapBlock: MAPBLOCK({
         NSString* name = doc[@"name"];
@@ -127,13 +129,18 @@ static void fixEncoding(NSMutableDictionary* doc, NSString* key) {
 }
 
 
-- (IBAction) fixTextEncoding: (id)sender {
+- (IBAction) fixDocs: (id)sender {
     CBLQuery* q = [_db createAllDocumentsQuery];
     for (CBLQueryRow* row in [q run: NULL]) {
         CBLDocument*doc = row.document;
         NSMutableDictionary* mdoc = [doc.properties mutableCopy];
-        //fixEncoding(mdoc, @"name");
-        fixEncoding(mdoc, @"description");
+        id abv = mdoc[@"abv"];
+        // Convert "abv" prop from string to number:
+        if ([abv isKindOfClass: [NSString class]]) {
+            double n = [abv doubleValue];
+            if (n > 0.0)
+                mdoc[@"abv"] = @(n);
+        }
         if (![mdoc isEqual: doc.properties]) {
             NSError* error;
             NSAssert([row.document putProperties: mdoc error: &error], @"couldn't save: %@", error);

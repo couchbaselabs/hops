@@ -82,6 +82,18 @@ NSSet* GetLeafNodes(NSTreeNode* tree) {
 }
 
 
+NSTreeNode* GetNodeForRevision(NSTreeNode* tree, CBLRevision* rev) {
+    if (tree.representedObject == rev)
+        return tree;
+    for (NSTreeNode* child in tree.childNodes) {
+        NSTreeNode* node = GetNodeForRevision(child, rev);
+        if (node)
+            return node;
+    }
+    return nil;
+}
+
+
 NSTreeNode* CopyTree(NSTreeNode* root) {
     if (!root)
         return nil;

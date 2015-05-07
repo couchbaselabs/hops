@@ -20,6 +20,7 @@
 		275D39BC1AF83AB50013B9A9 /* DocViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275D39BA1AF83AB50013B9A9 /* DocViewer.xib */; };
 		275D39BF1AF83B530013B9A9 /* RevTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39BE1AF83B530013B9A9 /* RevTreeView.m */; };
 		275D39C21AF83CA40013B9A9 /* DocHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39C11AF83CA40013B9A9 /* DocHistory.m */; };
+		275D39C51AFBD5CA0013B9A9 /* RevView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39C41AFBD5CA0013B9A9 /* RevView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		275D39BE1AF83B530013B9A9 /* RevTreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevTreeView.m; sourceTree = "<group>"; };
 		275D39C01AF83CA40013B9A9 /* DocHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocHistory.h; sourceTree = "<group>"; };
 		275D39C11AF83CA40013B9A9 /* DocHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocHistory.m; sourceTree = "<group>"; };
+		275D39C31AFBD5CA0013B9A9 /* RevView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevView.h; sourceTree = "<group>"; };
+		275D39C41AFBD5CA0013B9A9 /* RevView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +126,8 @@
 				275D39BA1AF83AB50013B9A9 /* DocViewer.xib */,
 				275D39BD1AF83B530013B9A9 /* RevTreeView.h */,
 				275D39BE1AF83B530013B9A9 /* RevTreeView.m */,
+				275D39C31AFBD5CA0013B9A9 /* RevView.h */,
+				275D39C41AFBD5CA0013B9A9 /* RevView.m */,
 				275D39C01AF83CA40013B9A9 /* DocHistory.h */,
 				275D39C11AF83CA40013B9A9 /* DocHistory.m */,
 				275D39921AF80D750013B9A9 /* Images.xcassets */,
@@ -271,6 +276,7 @@
 				275D39911AF80D750013B9A9 /* main.m in Sources */,
 				275D39B21AF80F0A0013B9A9 /* QueryController.m in Sources */,
 				275D398F1AF80D750013B9A9 /* AppDelegate.m in Sources */,
+				275D39C51AFBD5CA0013B9A9 /* RevView.m in Sources */,
 				275D39BB1AF83AB50013B9A9 /* DocViewer.m in Sources */,
 				275D39BF1AF83B530013B9A9 /* RevTreeView.m in Sources */,
 				275D39B71AF81B9A0013B9A9 /* Beer.m in Sources */,

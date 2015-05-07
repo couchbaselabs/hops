@@ -7,39 +7,42 @@
 //
 
 #import "RevTreeView.h"
+#import "RevView.h"
 #import "DocHistory.h"
 #import <CouchbaseLite/CouchbaseLite.h>
 @import QuartzCore;
 
 
-#define kNodeWidth 100
-#define kNodeHeight 75
-
-#define kNodeGapX 50
+#define kNodeGapX 30
 #define kNodeGapY 20
+
+
+@interface RevTreeView ()
+@end
 
 
 @implementation RevTreeView
 {
     CBLDocument* _cblDocument;
+    CBLRevision* _selectedRev;
+    CBLUnsavedRevision* _draftRevision;
     NSTreeNode* _rootNode;
     NSMutableArray* _arrows;
-    CALayer* _selectedLayer;
+    NSSize _contentSize;
 }
 
 
-static CGColorRef kBGColor, kDeletedBGColor, kAncestorBGColor, kBorderColor;
-static NSFont* kRevIDFont;
-
-+ (void)initialize {
-    if (self == [RevTreeView class]) {
-        kBGColor = CGColorCreateGenericRGB(0.667, 1.000, 0.656, 1.000);
-        kDeletedBGColor = CGColorCreateGenericRGB(0.667, 1.000, 0.656, 1.000);
-        kAncestorBGColor = CGColorCreateGenericRGB(0.884, 0.936, 0.882, 1.000);
-        kBorderColor = CGColorRetain([NSColor darkGrayColor].CGColor);
-        kRevIDFont = [NSFont fontWithName: @"Monaco" size: 1];
+- (instancetype)initWithFrame:(NSRect)frame
+{
+    self = [super initWithFrame: frame];
+    if (self) {
+        self.autoresizingMask = NSViewNotSizable;
     }
+    return self;
 }
+
+
+#pragma mark - MODEL:
 
 
 - (CBLDocument*) cblDocument {
@@ -49,13 +52,64 @@ static NSFont* kRevIDFont;
 - (void) setCblDocument:(CBLDocument *)cblDocument {
     if (cblDocument == _cblDocument)
         return;
+    if (_cblDocument)
+        [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: _cblDocument];
     _cblDocument = cblDocument;
+    self.selectedRev = _cblDocument.currentRevision;
+    _rootNode = _cblDocument ? GetDocRevisionTree(_cblDocument) : nil;
+    [self rebuild];
+    if (_cblDocument)
+        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(docChanged:)
+                                                     name: kCBLDocumentChangeNotification
+                                                   object: _cblDocument];
+}
+
+
+- (void) docChanged: (NSNotification*)n {
+    _selectedRev = nil;
+    _draftRevision = nil;
     _rootNode = GetDocRevisionTree(_cblDocument);
     [self rebuild];
 }
 
 
+- (CBLUnsavedRevision*) createDraftRevision {
+    if (![_selectedRev isKindOfClass: [CBLSavedRevision class]])
+        return nil;
+    if (_draftRevision.parentRevision == _selectedRev)
+        return _draftRevision;
+    if (_draftRevision)
+        [self removeDraftRevision];
+    _draftRevision = [(CBLSavedRevision*)_selectedRev createRevision];
+    if (!_draftRevision)
+        return nil;
+    NSTreeNode* node = [NSTreeNode treeNodeWithRepresentedObject: _draftRevision];
+    NSTreeNode* parentNode = GetNodeForRevision(_rootNode, _selectedRev);
+    [parentNode.mutableChildNodes addObject: node];
+    self.selectedRev = _draftRevision;
+    [self rebuild];
+    [self scrollRectToVisible: [self viewForRevision: _draftRevision].frame];
+    return _draftRevision;
+}
+
+
+- (void) removeDraftRevision {
+    if (!_draftRevision)
+        return;
+    NSTreeNode* node = GetNodeForRevision(_rootNode, _draftRevision);
+    NSTreeNode* parent = node.parentNode;
+    [parent.mutableChildNodes removeObject: node];
+    _draftRevision = nil;
+    self.selectedRev = parent.representedObject;
+    [self rebuild];
+}
+
+
+#pragma mark - DISPLAY:
+
+
 - (void) drawRect:(NSRect)dirtyRect {
+    // Draw the lines between revisions:
     NSBezierPath* path = [NSBezierPath new];
     for (NSArray* arrow in _arrows) {
         NSPoint p0 = [arrow[0] pointValue];
@@ -64,44 +118,67 @@ static NSFont* kRevIDFont;
         [path lineToPoint: p1];
     }
     path.lineWidth = 2;
-    [[NSColor blackColor] set];
+    [[NSColor lightGrayColor] set];
     [path stroke];
 }
 
 
+- (CBLRevision*) selectedRev {
+    return _selectedRev;
+}
+
+- (void) setSelectedRev:(CBLRevision *)selectedRev {
+    if (selectedRev == _selectedRev)
+        return;
+    if (_selectedRev)
+        [self viewForRevision: _selectedRev].selected = NO;
+    _selectedRev = selectedRev;
+    if (_selectedRev)
+        [self viewForRevision: _selectedRev].selected = YES;
+}
+
+
+#pragma mark - LAYOUT:
+
+
 - (void) rebuild {
-    self.autoresizingMask = NSViewNotSizable;
-    _selectedLayer = nil;
-    CALayer* root = self.layer;
-    for (CALayer* layer in root.sublayers.copy)
-        [layer removeFromSuperlayer];
-    root.backgroundColor = [NSColor whiteColor].CGColor;
+    for (NSView* view in self.subviews.copy)
+        if ([view isKindOfClass: [RevView class]])
+            [view removeFromSuperview];
 
     _arrows = [NSMutableArray array];
-    CGPoint origin = {kNodeGapX + kNodeWidth/2,
-                      (DepthOfTree(_rootNode)-1) * (kNodeHeight + kNodeGapY) + kNodeGapY + kNodeHeight/2};
+    CGPoint origin = {kRevWidth/2,
+                      (DepthOfTree(_rootNode)-1) * (kRevHeight + kNodeGapY) + kNodeGapY + kRevHeight/2};
     [self addBranch: _rootNode atPoint: origin];
 
     CGRect frame = NSZeroRect;
-    for (CALayer* layer in root.sublayers)
-        frame = CGRectUnion(frame, layer.frame);
-    [self setFrame: NSInsetRect(frame, -kNodeGapX, -kNodeGapY)];
+    for (RevView* view in self.subviews)
+        if ([view isKindOfClass: [RevView class]])
+            frame = CGRectUnion(frame, view.frame);
+    _contentSize = frame.size;
+    self.frameSize = _contentSize;
+    [self invalidateIntrinsicContentSize];
     [self setNeedsDisplay: YES];
 }
 
-- (void) resizeWithOldSuperviewSize:(NSSize)oldSize {
-    // ignore this call; for some reason the NSView implementation resizes me to (0,0)
+
+- (NSSize) intrinsicContentSize {
+    return _contentSize;
+}
+
+- (void)resizeSubviewsWithOldSize:(NSSize)oldSize {
+    // no-op
 }
 
 - (void) addBranch: (NSTreeNode*)node atPoint: (CGPoint)position {
     BOOL atRoot = (node == _rootNode);
     while (node) {
-        [self addLayerForRevision: node atPoint: position];
+        [self addViewForRevision: node atPoint: position];
         NSArray* children = node.childNodes;
-        CGPoint nextPos = {position.x, position.y - kNodeHeight - kNodeGapY};
+        CGPoint nextPos = {position.x, position.y - kRevHeight - kNodeGapY};
         CGPoint childPos = nextPos;
         for (int i = 1; i < children.count; i++) {
-            childPos.x += kNodeWidth + kNodeGapX;
+            childPos.x += kRevWidth + kNodeGapX;
             [self addBranch: children[i] atPoint: childPos];
             if (!atRoot)
                 [_arrows addObject: @[ [NSValue valueWithPoint: position],
@@ -116,34 +193,28 @@ static NSFont* kRevIDFont;
     }
 }
 
-- (CALayer*) addLayerForRevision: (NSTreeNode*)node atPoint: (CGPoint)position {
+- (RevView*) addViewForRevision: (NSTreeNode*)node atPoint: (CGPoint)position {
     if (node == _rootNode)
         return nil; // root node is invisible
     CBLSavedRevision* rev = node.representedObject;
-    NSLog(@"Adding rev layer for %@ at (%g, %g)", rev.revisionID, position.x, position.y);
-    CALayer* layer = [[CALayer alloc] init];
-    layer.bounds = CGRectMake(0, 0, kNodeWidth, kNodeHeight);
-    layer.position = position;
-    if (node.childNodes.count > 0)
-        layer.backgroundColor = kAncestorBGColor;
-    else
-        layer.backgroundColor = rev.isDeletion ? kDeletedBGColor : kBGColor;
-    layer.borderColor = kBorderColor;
-    layer.borderWidth = (node.childNodes.count == 0) ? 2 : 1;
-    layer.cornerRadius = 8.0;
-    layer.delegate = self;
-    [layer setValue: node forKey: @"treeNode"];
+    RevView* view = [[RevView alloc] initWithRevision: rev isLeaf: node.childNodes.count==0];
+    NSRect frame = view.frame;
+    frame.origin.x = round(position.x - frame.size.width/2.0);
+    frame.origin.y = round(position.y - frame.size.height/2.0);
+    view.frame = frame;
+    view.selected = (rev == _selectedRev);
 
-    CATextLayer* label = [[CATextLayer alloc] init];
-    label.font = (__bridge CFTypeRef)(kRevIDFont);
-    label.fontSize = 16.0;
-    label.foregroundColor = [NSColor blackColor].CGColor;
-    label.string = rev.revisionID;
-    label.frame = NSInsetRect(layer.bounds, 6, 6);
-    [layer addSublayer: label];
+    [self addSubview: view];
+    return view;
+}
 
-    [self.layer addSublayer: layer];
-    return layer;
+
+- (RevView*) viewForRevision: (CBLRevision*)rev {
+    for (RevView* view in self.subviews) {
+        if ([view isKindOfClass: [RevView class]] && view.revision == rev)
+            return view;
+    }
+    return nil;
 }
 
 
@@ -151,23 +222,16 @@ static NSFont* kRevIDFont;
 
 
 - (void) mouseDown:(NSEvent *)event {
-    CALayer* hit = [self hitTestNode: event];
-    if (hit != _selectedLayer) {
-        _selectedLayer.shadowOpacity = 0.0;
-        _selectedLayer = hit;
-        _selectedLayer.shadowOpacity = 1.0;
-        _selectedLayer.shadowOffset = CGSizeMake(0, 0);
-        _selectedLayer.shadowColor = [NSColor orangeColor].CGColor;
-        _selectedLayer.shadowRadius = 6.0;
-    }
+    RevView* hit = [self hitTestRevView: event];
+    self.selectedRev = hit.revision;
 }
 
 
-- (CALayer*) hitTestNode: (NSEvent*)event {
+- (RevView*) hitTestRevView: (NSEvent*)event {
     NSPoint where = [self convertPoint: event.locationInWindow fromView: nil];
-    for (CALayer* layer in self.layer.sublayers) {
-        if (NSPointInRect(where, layer.frame))
-            return layer;
+    for (RevView* view in self.subviews) {
+        if (NSPointInRect(where, view.frame) && [view isKindOfClass: [RevView class]])
+            return view;
     }
     return nil;
 }
