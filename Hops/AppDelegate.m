@@ -36,14 +36,6 @@
     _db = [[CBLManager sharedInstance] databaseNamed: @"beer" error: &error];
     NSAssert(_db, @"Failed to create/open database: %@", error);
 
-//    NSURL* url = [NSURL URLWithString: kSyncDBURL];
-//    _pull = [_db createPullReplication: url];
-//    [_pull start];
-//    _push = [_db createPushReplication: url];
-//    [_push start];
-
-    //[self fixDocs: self];
-
     CBLView* nameView = [_db viewNamed: @"byName"];
     [nameView setMapBlock: MAPBLOCK({
         NSString* name = doc[@"name"];
@@ -51,12 +43,11 @@
             emit(name, nil);
     }) version: @"1"];
 
-    _docViewer = [[DocViewer alloc] init];
-    [_docViewer showWindow: self];
-
     self.beerListController = [[QueryController alloc] initWithQuery: [nameView createQuery]
                                                           modelClass: [Beer class]];
     [_beerListArrayController addObserver: self forKeyPath: @"selection" options: 0 context: NULL];
+
+    _window.title = [[NSBundle mainBundle] objectForInfoDictionaryKey: (id)kCFBundleNameKey];
 }
 
 
@@ -85,15 +76,37 @@
         NSLog(@"Starting replications");
         NSURL* url = [NSURL URLWithString: kSyncDBURL];
         _pull = [_db createPullReplication: url];
+        _pull.continuous = YES;
         [_pull start];
         _push = [_db createPushReplication: url];
+        _push.continuous = YES;
         [_push start];
     }
 }
 
 
+- (IBAction) showInspector: (id)sender {
+    if (!_docViewer) {
+        _docViewer = [[DocViewer alloc] init];
+        _docViewer.cblDocument = [_beerListArrayController.selectedObjects.firstObject document];
+    }
+    [_docViewer showWindow: self];
+}
+
+
 - (IBAction) toggleOnline: (id)sender {
     self.online = !self.online;
+}
+
+
+- (IBAction) compactDatabase: (id)sender {
+    NSError* error;
+    if (![_db compact: &error]) {
+        [_window presentError: error];
+        return;
+    }
+    // Because CBL doesn't post a notification for this...
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"Compacted" object: _db];
 }
 
 

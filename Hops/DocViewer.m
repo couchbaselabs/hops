@@ -19,11 +19,10 @@
 {
     CBLDocument* _cblDocument;
     NSAttributedString* _draftJSON;
-    BOOL _creatingDraft;
 
     IBOutlet NSSplitView* _splitView;
     IBOutlet NSTextView* _jsonView;
-    IBOutlet NSButton* _saveButton, *_cancelButton;
+    IBOutlet NSButton *_editButton, *_saveButton, *_cancelButton;
 }
 
 
@@ -42,15 +41,17 @@
     _revTreeView.cblDocument = _cblDocument;
     [_revTreeView addObserver: self forKeyPath: @"selectedRev" options: 0 context: NULL];
 
-    _jsonView.font = [NSFont fontWithName: @"Menlo" size: 12.0];
+    _jsonView.font = [NSFont fontWithName: @"Menlo" size: 16.0];
     _jsonView.automaticQuoteSubstitutionEnabled = NO;
+    [_jsonView.enclosingScrollView addSubview: _editButton];
     [_jsonView.enclosingScrollView addSubview: _saveButton];
     [_jsonView.enclosingScrollView addSubview: _cancelButton];
-    _saveButton.hidden = _cancelButton.hidden = YES;
+    _editButton.hidden = _saveButton.hidden = _cancelButton.hidden = YES;
     [self repositionSaveButton];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(repositionSaveButton)
                                                  name: NSViewFrameDidChangeNotification
                                                object: _saveButton.superview];
+    [self updateJSON];
 }
 
 
@@ -62,11 +63,25 @@
     frame.origin.y = NSMaxY(parentBounds) - frame.size.height - 16;
     _saveButton.frame = frame;
     _cancelButton.frame = NSOffsetRect(frame, -frame.size.width - 0, 0);
+
+    frame.origin.x = 16;
+    frame.size.width = _editButton.frame.size.width;
+    _editButton.frame = frame;
 }
 
 
 - (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview: (NSView *)view {
     return [splitView.subviews indexOfObject: view] != 0;
+}
+
+- (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview {
+    return YES;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition
+         ofSubviewAt:(NSInteger)dividerIndex
+{
+    return MAX(proposedMinimumPosition, 125.0);
 }
 
 
@@ -84,23 +99,26 @@
 
 - (void) updateJSON {
     CBLRevision* rev = _revTreeView.selectedRev;
+    BOOL isDraft = [rev isKindOfClass: [CBLUnsavedRevision class]];
     NSLog(@"updateJSON -- rev = %@", rev);
-    if (!_creatingDraft) {
-        NSAttributedString* json = nil;
-        if (rev) {
-            if ([rev isKindOfClass: [CBLUnsavedRevision class]] && _draftJSON != nil) {
-                json = _draftJSON;
-            } else {
-                NSMutableDictionary* props = [rev.properties mutableCopy];
-                json = prettyPrintJSON(props, rev.parentRevision.properties);
-            }
-        }
-        [_jsonView.textStorage setAttributedString: json];
-        _jsonView.editable = (json != nil)
-                          && !(_draftJSON && ![rev isKindOfClass: [CBLUnsavedRevision class]]);
 
+    NSAttributedString* json = nil;
+    if (rev) {
+        if ([rev isKindOfClass: [CBLUnsavedRevision class]] && _draftJSON != nil) {
+            json = _draftJSON;
+        } else {
+            NSDictionary* props = rev.properties;
+            if (props)
+                json = [self prettyPrintJSON: props
+                                  previously: rev.parentRevision.properties];
+        }
     }
-    _saveButton.hidden = _cancelButton.hidden = ![rev isKindOfClass: [CBLUnsavedRevision class]];
+    if (!json)
+        json = [NSAttributedString new];
+    [_jsonView.textStorage setAttributedString: json];
+    _jsonView.editable = isDraft;
+    _saveButton.hidden = _cancelButton.hidden = !isDraft;
+    _editButton.hidden = (rev == nil || isDraft);
 }
 
 
@@ -118,18 +136,20 @@
 
 
 
-static NSAttributedString* prettyPrintJSON(NSDictionary* properties,
-                                           NSDictionary* oldProperties)
+- (NSAttributedString*) prettyPrintJSON: (NSDictionary*)properties
+                             previously: (NSDictionary*)oldProperties
 {
-    NSArray* keys = properties.allKeys;
+    NSMutableArray* keys = [properties.allKeys mutableCopy];
     if (oldProperties) {
-        keys = [keys arrayByAddingObjectsFromArray: oldProperties.allKeys];
-        keys = [[NSSet setWithArray: keys] allObjects];
+        [keys addObjectsFromArray: oldProperties.allKeys];
+        keys = [[[NSSet setWithArray: keys] allObjects] mutableCopy];
     }
-    keys = [keys sortedArrayUsingComparator: ^NSComparisonResult(NSString* s1, NSString* s2) {
+//    [keys removeObject: @"_id"];
+//    [keys removeObject: @"_rev"];
+    [keys sortUsingComparator: ^NSComparisonResult(NSString* s1, NSString* s2) {
         int n = [s2 hasPrefix: @"_"] - [s1 hasPrefix: @"_"];
         if (n != 0)
-            return n;
+            return n; // underscored properties come first
         return [s1 compare: s2 options: NSLiteralSearch];
     }];
     NSUInteger maxKeyLen = 0;
@@ -140,6 +160,10 @@ static NSAttributedString* prettyPrintJSON(NSDictionary* properties,
     for (NSString* key in keys) {
         NSUInteger lineStart = output.length;
         [output.mutableString appendFormat: @"    \"%@\":  ", key];
+        [output addAttribute: NSForegroundColorAttributeName
+                       value: [NSColor grayColor]
+                       range: NSMakeRange(lineStart, output.length-2-lineStart)];
+
         for (NSUInteger i=key.length; i<maxKeyLen; i++)
             [output.mutableString appendString: @" "];
         id value = properties[key] ?: oldProperties[key];
@@ -181,31 +205,33 @@ static NSAttributedString* prettyPrintJSON(NSDictionary* properties,
         }
     }
     [output.mutableString appendString: @"}"];
+
+    NSMutableParagraphStyle* paraStyle = [NSMutableParagraphStyle new];
+    paraStyle.headIndent = 72.0;
+    paraStyle.firstLineHeadIndent = 0.0;
+    paraStyle.tailIndent = -0.25;
+
     [output addAttribute: NSFontAttributeName
-                   value: [NSFont fontWithName: @"Menlo" size: 14.0]
+                   value: _jsonView.font
+                   range: NSMakeRange(0, output.length)];
+    [output addAttribute: NSParagraphStyleAttributeName
+                   value: paraStyle
                    range: NSMakeRange(0, output.length)];
     return output;
 }
 
 
-- (BOOL)textView:(NSTextView *)textView shouldChangeTextInRanges:(NSArray *)affectedRanges
-                                              replacementStrings:(NSArray *)replacementStrings
-{
-    CBLRevision* rev = _revTreeView.selectedRev;
-    if (_draftJSON && ![rev isKindOfClass: [CBLUnsavedRevision class]])
-        return NO; // there's already a draft
-    return rev != nil;  // Disable editing when no rev is displayed
+- (void)textDidChange: (NSNotification*)n {
+    _draftJSON = [_jsonView.textStorage copy];
 }
 
 
-- (void)textDidChange: (NSNotification*)n {
+- (IBAction) createDraftRevision: (id)sender {
+    [_revTreeView createDraftRevision];
     _draftJSON = [_jsonView.textStorage copy];
-    if (![_revTreeView.selectedRev isKindOfClass: [CBLUnsavedRevision class]]) {
-        _creatingDraft = YES;
-        [_revTreeView createDraftRevision];
-        _creatingDraft = NO;
-    }
     _saveButton.hidden = _cancelButton.hidden = NO;
+    _editButton.hidden = YES;
+    _editButton.enabled = NO;
 }
 
 
@@ -256,12 +282,14 @@ static NSAttributedString* prettyPrintJSON(NSDictionary* properties,
         return;
     }
     _draftJSON = nil;
+    _editButton.enabled = YES;
     _revTreeView.selectedRev = saved;
 }
 
 
 - (IBAction) cancelChanges:(id)sender {
     _draftJSON = nil;
+    _editButton.enabled = YES;
     [_revTreeView removeDraftRevision];
 }
 

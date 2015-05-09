@@ -114,10 +114,17 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Xam-Ud-mHa"/>
-                            <menuItem title="Replicator Online" id="hNg-EH-G7e">
+                            <menuItem title="Compact Database" id="hNg-EH-G7e">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="toggleOnline:" target="Voe-Tx-rLC" id="fJ2-Tx-aHN"/>
+                                    <action selector="compactDatabase:" target="Voe-Tx-rLC" id="4k6-xx-Rhl"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="fuO-FD-0mK"/>
+                            <menuItem title="Replicator Online" id="T83-er-tgx">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleOnline:" target="Voe-Tx-rLC" id="XXV-Lo-oC7"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -357,6 +364,13 @@
                                     <action selector="performZoom:" target="-1" id="DIl-cC-cCs"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="09Z-nr-F3F"/>
+                            <menuItem title="Document Inspector" keyEquivalent="i" id="G4L-c9-Vyh">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="showInspector:" target="Voe-Tx-rLC" id="2q7-9a-6J5"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
                             <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -465,7 +479,7 @@
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="bhH-Un-FbG"/>
                                         </constraints>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="Name of Brewery" id="qTh-VA-LwE">
-                                            <font key="font" size="17" name="Covington"/>
+                                            <font key="font" size="18" name="Covington"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -477,8 +491,8 @@
                                             </binding>
                                         </connections>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-m5-GoA">
-                                        <rect key="frame" x="318" y="15" width="63" height="19"/>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-m5-GoA">
+                                        <rect key="frame" x="349" y="15" width="32" height="21"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Label" id="G8u-Km-nwf">
                                             <font key="font" size="17" name="OstrichSans-Medium"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -497,13 +511,13 @@
                                             </binding>
                                         </connections>
                                     </textField>
-                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HFt-Gw-a2N">
-                                        <rect key="frame" x="19" y="79" width="363" height="237"/>
+                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HFt-Gw-a2N">
+                                        <rect key="frame" x="18" y="77" width="363" height="237"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="237" id="V4M-qt-Lgx"/>
                                         </constraints>
                                         <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" id="PoY-pB-QyL">
-                                            <font key="font" size="14" name="Alegreya-Italic"/>
+                                            <font key="font" size="17" name="Alegreya-Italic"/>
                                             <string key="title">The Triple is a strong, full-bodied Belgian abbey-style ale. The authentic Belgian yeast strain used in fermentation contributes to a rich array of spicy, phenolic, and fruit-like flavors and noticeable alcoholic warmth. This unfiltered ale has an irresistible pale orange-colored hazy glow.</string>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

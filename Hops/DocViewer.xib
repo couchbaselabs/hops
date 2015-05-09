@@ -7,6 +7,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="DocViewer">
             <connections>
                 <outlet property="_cancelButton" destination="9h6-38-uS0" id="up9-wG-CyZ"/>
+                <outlet property="_editButton" destination="0c9-Nd-JlD" id="eR8-gX-xBn"/>
                 <outlet property="_jsonView" destination="KWj-76-8ny" id="jPS-2Y-0Wu"/>
                 <outlet property="_revTreeView" destination="JAi-o2-EDM" id="aN6-n2-dWc"/>
                 <outlet property="_saveButton" destination="mHQ-KC-qFe" id="FCT-M3-UWd"/>
@@ -137,6 +138,18 @@ Gw
                 <action selector="cancelChanges:" target="-2" id="6bb-5Q-1iM"/>
             </connections>
             <point key="canvasLocation" x="365" y="1158.5"/>
+        </button>
+        <button verticalHuggingPriority="750" id="0c9-Nd-JlD">
+            <rect key="frame" x="0.0" y="0.0" width="139" height="43"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <buttonCell key="cell" type="push" title="Add Revision…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b37-6j-641">
+                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                <font key="font" metaFont="system"/>
+            </buttonCell>
+            <connections>
+                <action selector="createDraftRevision:" target="-2" id="zou-pB-0mv"/>
+            </connections>
+            <point key="canvasLocation" x="228" y="1161.5"/>
         </button>
     </objects>
 </document>

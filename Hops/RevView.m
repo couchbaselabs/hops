@@ -24,7 +24,7 @@
 }
 
 
-static NSColor *kLeafBGColor, *kDeletedBGColor, *kBGColor, *kBorderColor, *kShadowColor, *kHighlightColor;
+static NSColor *kLeafBGColor, *kDeletedBGColor, *kBGColor, *kMissingBGColor, *kBorderColor, *kShadowColor, *kHighlightColor;
 static NSDictionary *kRevIDTextAttrs, *kUnsavedTextAttrs;
 static NSFont* kRevIDFont;
 
@@ -34,8 +34,10 @@ static NSFont* kRevIDFont;
     if (self == [RevView class]) {
         kLeafBGColor = [NSColor lightGrayColor];
         kDeletedBGColor = kLeafBGColor;
-        kBGColor = kLeafBGColor;
-        kBorderColor = [NSColor blackColor];
+        kBGColor = [NSColor colorWithCalibratedWhite: 0.8 alpha: 1.0];
+        kMissingBGColor = [NSColor colorWithCalibratedWhite: 0.9 alpha: 1.0];
+
+        kBorderColor = [NSColor grayColor];
         kShadowColor = [[NSColor blackColor] colorWithAlphaComponent: 0.5];
         kHighlightColor = [NSColor orangeColor];
 
@@ -62,14 +64,21 @@ static NSFont* kRevIDFont;
 
     CGFloat borderWidth = 0;//kBorderWidth;
     NSColor* bgColor = kLeafBGColor;
-    if (_revision.isDeletion)
+    if (_revision.isDeletion) {
+        // Tombstone:
         bgColor = kDeletedBGColor;
-    else if (!_isLeaf)
-        bgColor = kBGColor;
-    else {
+    } else if (_isLeaf) {
+        // Leaf:
         bgColor = kLeafBGColor;
         if (![_revision isKindOfClass: [CBLUnsavedRevision class]])
-            borderWidth = kLeafBorderWidth;
+            borderWidth = kLeafBorderWidth; // Draft
+    } else if (_revision.properties != nil) {
+        // Ancestor, still has properties:
+        bgColor = kBGColor;
+    } else {
+        // Ancestor, compacted away:
+        bgColor = kMissingBGColor;
+        borderWidth = 1;
     }
 
     CGFloat pathInset = kHighlightWidth + borderWidth/2.0;
@@ -84,9 +93,11 @@ static NSFont* kRevIDFont;
         shadow.shadowBlurRadius = kHighlightWidth;
         [shadow set];
     }
-    if (borderWidth > 0.0) {
-        [path setLineWidth: borderWidth];
-        [path stroke];
+    if (_selected) {
+        [path setLineWidth: borderWidth+2];
+        [kHighlightColor setStroke];
+        if (_revision.properties)
+            [path stroke]; // just draws the shadow
     }
 
     [bgColor set];
@@ -121,8 +132,13 @@ static NSFont* kRevIDFont;
 
     // Draw border:
     if (borderWidth > 0.0) {
-        [kBorderColor set];
+        [kBorderColor setStroke];
         [path setLineWidth: borderWidth];
+        if (!_revision.properties) {
+            CGFloat dash[2] = {10.0, 10.0};
+            [path setLineDash: dash count: 2 phase: 0];
+            //[[NSColor grayColor] setStroke];
+        }
         [path stroke];
     }
 }

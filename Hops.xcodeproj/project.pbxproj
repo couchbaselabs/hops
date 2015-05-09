@@ -21,6 +21,19 @@
 		275D39BF1AF83B530013B9A9 /* RevTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39BE1AF83B530013B9A9 /* RevTreeView.m */; };
 		275D39C21AF83CA40013B9A9 /* DocHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39C11AF83CA40013B9A9 /* DocHistory.m */; };
 		275D39C51AFBD5CA0013B9A9 /* RevView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39C41AFBD5CA0013B9A9 /* RevView.m */; };
+		275D39C81AFDCEDD0013B9A9 /* DocHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39C11AF83CA40013B9A9 /* DocHistory.m */; };
+		275D39C91AFDCEDD0013B9A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39901AF80D750013B9A9 /* main.m */; };
+		275D39CA1AFDCEDD0013B9A9 /* QueryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B11AF80F0A0013B9A9 /* QueryController.m */; };
+		275D39CB1AFDCEDD0013B9A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D398E1AF80D750013B9A9 /* AppDelegate.m */; };
+		275D39CC1AFDCEDD0013B9A9 /* RevView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39C41AFBD5CA0013B9A9 /* RevView.m */; };
+		275D39CD1AFDCEDD0013B9A9 /* DocViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B91AF83AB50013B9A9 /* DocViewer.m */; };
+		275D39CE1AFDCEDD0013B9A9 /* RevTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39BE1AF83B530013B9A9 /* RevTreeView.m */; };
+		275D39CF1AFDCEDD0013B9A9 /* Beer.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D39B61AF81B9A0013B9A9 /* Beer.m */; };
+		275D39D11AFDCEDD0013B9A9 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */; };
+		275D39D31AFDCEDD0013B9A9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 275D39921AF80D750013B9A9 /* Images.xcassets */; };
+		275D39D41AFDCEDD0013B9A9 /* DocViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275D39BA1AF83AB50013B9A9 /* DocViewer.xib */; };
+		275D39D51AFDCEDD0013B9A9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275D39941AF80D750013B9A9 /* MainMenu.xib */; };
+		275D39D71AFDCEDD0013B9A9 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +54,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				275D39B41AF8155E0013B9A9 /* CouchbaseLite.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		275D39D61AFDCEDD0013B9A9 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				275D39D71AFDCEDD0013B9A9 /* CouchbaseLite.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,6 +96,7 @@
 		275D39C11AF83CA40013B9A9 /* DocHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocHistory.m; sourceTree = "<group>"; };
 		275D39C31AFBD5CA0013B9A9 /* RevView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevView.h; sourceTree = "<group>"; };
 		275D39C41AFBD5CA0013B9A9 /* RevView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevView.m; sourceTree = "<group>"; };
+		275D39DB1AFDCEDD0013B9A9 /* Malt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Malt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +112,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		275D39D01AFDCEDD0013B9A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				275D39D11AFDCEDD0013B9A9 /* CouchbaseLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +141,7 @@
 			children = (
 				275D39881AF80D750013B9A9 /* Hops.app */,
 				275D399B1AF80D750013B9A9 /* HopsTests.xctest */,
+				275D39DB1AFDCEDD0013B9A9 /* Malt.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,6 +244,24 @@
 			productReference = 275D399B1AF80D750013B9A9 /* HopsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		275D39C61AFDCEDD0013B9A9 /* Malt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 275D39D81AFDCEDD0013B9A9 /* Build configuration list for PBXNativeTarget "Malt" */;
+			buildPhases = (
+				275D39C71AFDCEDD0013B9A9 /* Sources */,
+				275D39D01AFDCEDD0013B9A9 /* Frameworks */,
+				275D39D21AFDCEDD0013B9A9 /* Resources */,
+				275D39D61AFDCEDD0013B9A9 /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Malt;
+			productName = Hops;
+			productReference = 275D39DB1AFDCEDD0013B9A9 /* Malt.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -243,6 +295,7 @@
 			targets = (
 				275D39871AF80D750013B9A9 /* Hops */,
 				275D399A1AF80D750013B9A9 /* HopsTests */,
+				275D39C61AFDCEDD0013B9A9 /* Malt */,
 			);
 		};
 /* End PBXProject section */
@@ -262,6 +315,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		275D39D21AFDCEDD0013B9A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				275D39D31AFDCEDD0013B9A9 /* Images.xcassets in Resources */,
+				275D39D41AFDCEDD0013B9A9 /* DocViewer.xib in Resources */,
+				275D39D51AFDCEDD0013B9A9 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +351,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				275D39A21AF80D750013B9A9 /* HopsTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		275D39C71AFDCEDD0013B9A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				275D39C81AFDCEDD0013B9A9 /* DocHistory.m in Sources */,
+				275D39C91AFDCEDD0013B9A9 /* main.m in Sources */,
+				275D39CA1AFDCEDD0013B9A9 /* QueryController.m in Sources */,
+				275D39CB1AFDCEDD0013B9A9 /* AppDelegate.m in Sources */,
+				275D39CC1AFDCEDD0013B9A9 /* RevView.m in Sources */,
+				275D39CD1AFDCEDD0013B9A9 /* DocViewer.m in Sources */,
+				275D39CE1AFDCEDD0013B9A9 /* RevTreeView.m in Sources */,
+				275D39CF1AFDCEDD0013B9A9 /* Beer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +536,36 @@
 			};
 			name = Release;
 		};
+		275D39D91AFDCEDD0013B9A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				INFOPLIST_FILE = Hops/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = Malt;
+			};
+			name = Debug;
+		};
+		275D39DA1AFDCEDD0013B9A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				INFOPLIST_FILE = Hops/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = Malt;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -485,6 +593,15 @@
 				275D39AA1AF80D750013B9A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+		};
+		275D39D81AFDCEDD0013B9A9 /* Build configuration list for PBXNativeTarget "Malt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				275D39D91AFDCEDD0013B9A9 /* Debug */,
+				275D39DA1AFDCEDD0013B9A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

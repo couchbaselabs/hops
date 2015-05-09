@@ -14,6 +14,10 @@ NSTreeNode* SortRevisionTree(NSTreeNode* tree) {
     [tree.mutableChildNodes sortUsingComparator: ^NSComparisonResult(id obj1, id obj2) {
         CBLSavedRevision* rev1 = [obj1 representedObject];
         CBLSavedRevision* rev2 = [obj2 representedObject];
+        // First, sort deletions after non-deletions:
+        int n = (int)rev1.isDeletion - (int)rev2.isDeletion;
+        if (n != 0)
+            return n;
         // Plain string compare is OK because sibling revs must start with the same gen #.
         // Comparing backwards because we want descending rev IDs, i.e. winner first.
         return [rev2.revisionID compare: rev1.revisionID];

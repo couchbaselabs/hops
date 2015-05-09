@@ -58,18 +58,25 @@
     self.selectedRev = _cblDocument.currentRevision;
     _rootNode = _cblDocument ? GetDocRevisionTree(_cblDocument) : nil;
     [self rebuild];
-    if (_cblDocument)
+    if (_cblDocument) {
         [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(docChanged:)
                                                      name: kCBLDocumentChangeNotification
                                                    object: _cblDocument];
+        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(rebuild)
+                                                     name: @"Compacted"
+                                                   object: _cblDocument.database];
+    }
 }
 
 
 - (void) docChanged: (NSNotification*)n {
+    NSString* selectedRevID = _selectedRev.revisionID;
     _selectedRev = nil;
     _draftRevision = nil;
     _rootNode = GetDocRevisionTree(_cblDocument);
     [self rebuild];
+    if (selectedRevID)
+        self.selectedRev = _cblDocument.currentRevision;
 }
 
 
