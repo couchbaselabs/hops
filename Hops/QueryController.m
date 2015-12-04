@@ -1,9 +1,9 @@
 //
 //  QueryController.m
-//  CouchCocoa
+//  Hops
 //
 //  Created by Jens Alfke on 6/1/11.
-//  Copyright (c) 2011-2013 Couchbase, Inc, Inc.
+//  Copyright (c) 2011-2015 Couchbase, Inc, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 //  except in compliance with the License. You may obtain a copy of the License at
@@ -18,6 +18,11 @@
 
 
 @implementation QueryController
+{
+    CBLLiveQuery* _query;
+    NSMutableArray* _rows;
+    Class _modelClass;
+}
 
 
 - (instancetype) initWithQuery: (CBLQuery*)query modelClass: (Class)modelClass {
@@ -26,62 +31,41 @@
     if (self != nil) {
         _modelClass = modelClass;
         _query = [query asLiveQuery];
-        _query.prefetch = YES;        // for efficiency, include docs on first load
-        // Observe changes to _query.rows:
-        [_query addObserver: self forKeyPath: @"rows" options: 0 context: NULL];
+        [_query addObserver: self forKeyPath: @"rows"
+                    options: NSKeyValueObservingOptionInitial context: NULL];
     }
     return self;
 }
 
 
-- (void) dealloc
-{
+- (void) dealloc {
     [_query removeObserver: self forKeyPath: @"rows"];
 }
 
 
-- (void) loadEntriesFrom: (CBLQueryEnumerator*)rows {
+- (void) loadEntries {
+    NSArray* allRows = _query.rows.allObjects ?: @[];
+    NSMutableArray* newRows = [allRows mutableCopy];
     NSLog(@"Reloading %lu rows from sequence #%lu...",
-          (unsigned long)rows.count, (unsigned long)rows.sequenceNumber);
-    NSMutableArray* entries = [NSMutableArray array];
+          (unsigned long)allRows.count, (unsigned long)_query.rows.sequenceNumber);
 
-    for (CBLQueryRow* row in rows) {
-        CBLModel* item = [_modelClass modelForDocument: row.document];
-        item.autosaves = YES;
-        [entries addObject: item];
-        // If this item isn't in the prior _entries, it's an external insertion:
-        if (_entries && [_entries indexOfObjectIdenticalTo: item] == NSNotFound)
-            [item markExternallyChanged];
+    // Preserve new/unsaved model objects from the previous row set:
+    for (id item in _rows) {
+        if ([item isKindOfClass: [CBLModel class]] && ((CBLModel*)item).isNew)
+            [newRows addObject: item];
     }
 
-    for (CBLModel* item in _entries) {
-        if ([item isNew])
-            [entries addObject: item];
-    }
-
-    if (![entries isEqual:_entries]) {
-        NSLog(@"    ...entries changed! (was %u, now %u)",
-              (unsigned)_entries.count, (unsigned)entries.count);
-        [self willChangeValueForKey: @"entries"];
-        _entries = [entries mutableCopy];
-        [self didChangeValueForKey: @"entries"];
-    }
+    [self willChangeValueForKey: @"entries"];
+    _rows = newRows;
+    [self didChangeValueForKey: @"entries"];
 }
 
 
 - (void)observeValueForKeyPath: (NSString*)keyPath ofObject: (id)object
                         change: (NSDictionary*)change context: (void*)context
 {
-    if (object == _query) {
-        [self loadEntriesFrom: _query.rows];
-    }
-}
-
-
-- (NSMutableArray*) _entries {
-    if (!_entries)
-        [self loadEntriesFrom: _query.rows];
-    return _entries;
+    if (object == _query)
+        [self loadEntries];
 }
 
 
@@ -89,28 +73,43 @@
 #pragma mark ENTRIES PROPERTY:
 
 
+// These are the key-value coding (KVC) methods to implement an array-valued "entry" property.
+// Doing it this way allows us to lazily instantiate the model objects from the query rows.
+
+
+@dynamic entries;
+
+
 - (NSUInteger) countOfEntries {
-    NSLog(@"countOfEntries returns %lu", self._entries.count);
-    return self._entries.count;
+    return _rows.count;
 }
 
 
 - (CBLModel*)objectInEntriesAtIndex: (NSUInteger)index {
-    return self._entries[index];
+    id entry = _rows[index];
+    if ([entry isKindOfClass: [CBLModel class]]) {
+        return entry;
+    } else {
+        CBLQueryRow* row = entry;
+        CBLModel* model = [_modelClass modelForDocument: row.document];
+        return model;
+    }
 }
 
 
 - (void) insertObject: (CBLModel*)object inEntriesAtIndex: (NSUInteger)index {
-    [self._entries insertObject: object atIndex: index];
+    NSParameterAssert([object isKindOfClass: [CBLModel class]]);
+    [_rows insertObject: object atIndex: index];
     object.autosaves = YES;
     object.database = _query.database;
 }
 
 
 - (void) removeObjectFromEntriesAtIndex: (NSUInteger)index {
-    CBLModel* item = self._entries[index];
-    item.database = nil;
-    [_entries removeObjectAtIndex: index];
+    id entry = _rows[index];
+    if ([entry isKindOfClass: [CBLModel class]])
+        ((CBLModel*)entry).database = nil;
+    [_rows removeObjectAtIndex: index];
 }
 
 

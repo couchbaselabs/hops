@@ -62,8 +62,8 @@ static NSFont* kRevIDFont;
 - (void)drawRect: (NSRect)dirtyRect {
     [super drawRect:dirtyRect];
 
-    CGFloat borderWidth = 0;//kBorderWidth;
-    NSColor* bgColor = kLeafBGColor;
+    CGFloat borderWidth = 0;
+    NSColor* bgColor;
     if (_revision.isDeletion) {
         // Tombstone:
         bgColor = kDeletedBGColor;

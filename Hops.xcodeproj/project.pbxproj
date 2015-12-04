@@ -155,17 +155,9 @@
 				275D39B11AF80F0A0013B9A9 /* QueryController.m */,
 				275D39B51AF81B9A0013B9A9 /* Beer.h */,
 				275D39B61AF81B9A0013B9A9 /* Beer.m */,
-				275D39B81AF83AB50013B9A9 /* DocViewer.h */,
-				275D39B91AF83AB50013B9A9 /* DocViewer.m */,
-				275D39BA1AF83AB50013B9A9 /* DocViewer.xib */,
-				275D39BD1AF83B530013B9A9 /* RevTreeView.h */,
-				275D39BE1AF83B530013B9A9 /* RevTreeView.m */,
-				275D39C31AFBD5CA0013B9A9 /* RevView.h */,
-				275D39C41AFBD5CA0013B9A9 /* RevView.m */,
-				275D39C01AF83CA40013B9A9 /* DocHistory.h */,
-				275D39C11AF83CA40013B9A9 /* DocHistory.m */,
-				275D39921AF80D750013B9A9 /* Images.xcassets */,
 				275D39941AF80D750013B9A9 /* MainMenu.xib */,
+				275D39DD1B00851A0013B9A9 /* Document Viewer */,
+				275D39921AF80D750013B9A9 /* Images.xcassets */,
 				275D398B1AF80D750013B9A9 /* Supporting Files */,
 			);
 			path = Hops;
@@ -203,6 +195,22 @@
 				275D39AC1AF80DCE0013B9A9 /* CouchbaseLite.framework */,
 			);
 			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		275D39DD1B00851A0013B9A9 /* Document Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				275D39B81AF83AB50013B9A9 /* DocViewer.h */,
+				275D39B91AF83AB50013B9A9 /* DocViewer.m */,
+				275D39BA1AF83AB50013B9A9 /* DocViewer.xib */,
+				275D39BD1AF83B530013B9A9 /* RevTreeView.h */,
+				275D39BE1AF83B530013B9A9 /* RevTreeView.m */,
+				275D39C31AFBD5CA0013B9A9 /* RevView.h */,
+				275D39C41AFBD5CA0013B9A9 /* RevView.m */,
+				275D39C01AF83CA40013B9A9 /* DocHistory.h */,
+				275D39C11AF83CA40013B9A9 /* DocHistory.m */,
+			);
+			name = "Document Viewer";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
